@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+    [SerializeField] Snake _snake;
     [SerializeField] private Transform _cursor;
     private Camera _camera;
     private Plane _plane;
@@ -17,6 +18,7 @@ public class Controller : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             MoveCursor();
+            _snake.LookAt(_cursor.position);
         }
     }
 
