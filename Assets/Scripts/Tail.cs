@@ -1,23 +1,71 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Tail : MonoBehaviour
 {
-    [SerializeField] private Transform _head;
-    [SerializeField] private List<Transform> _details;
+    [SerializeField] private Transform _detailPrefab;
     [SerializeField] private float _detailDistance = 1;
-    [SerializeField] private float _snakeSpeed = 2f;
+    private Transform _head;
+    private float _snakeSpeed = 2f;
+    private List<Transform> _details = new List<Transform>();
     private List<Vector3> _positionHistory = new List<Vector3>();
 
-
-    void Awake()
+    public void Init(Transform head, float speed, int detailCount)
     {
+        _snakeSpeed = speed;
+        _head = head;
+
+        _details.Add(transform);
         _positionHistory.Add(_head.position);
-        for (int i = 0; i < _details.Count; i++)
+        _positionHistory.Add(transform.position);
+
+        SetDetailCount(detailCount);
+    }
+
+    void SetDetailCount(int detailCount)
+    {
+        if (detailCount == _details.Count + 1) return;
+
+        int diff = (_details.Count - 1) - detailCount;
+
+        if (diff < 1)
         {
-            _positionHistory.Add(_details[i].position);
+            for (int i = 0; i < -diff; i++)
+            {
+                AddDetail();
+            }
         }
+        else
+        {
+            for (int i = 0; i < diff; i++)
+            {
+                RemoveDetail();
+            }
+        }
+    }
+
+    void AddDetail()
+    {
+        Vector3 position = _details[_details.Count - 1].position;
+        Transform detail = Instantiate(_detailPrefab, position, Quaternion.identity);
+        _details.Insert(0, detail);
+        _positionHistory.Add(position);
+    }
+
+    void RemoveDetail()
+    {
+        if (_details.Count <= 1)
+        {
+            Debug.LogError("Пытаемся удалить деталь, которой нет");
+            return;
+        }
+        Transform detail = _details[0];
+        _details.Remove(detail);
+        Destroy(detail.gameObject);
+        _positionHistory.RemoveAt(_positionHistory.Count - 1);
+
     }
 
     void Update()
@@ -36,9 +84,17 @@ public class Tail : MonoBehaviour
         {
             _details[i].position = Vector3.Lerp(_positionHistory[i + 1], _positionHistory[i], distance / _detailDistance);
 
-            Vector3 direction = (_positionHistory[i]- _positionHistory[i + 1]).normalized;
+            //Vector3 direction = (_positionHistory[i] - _positionHistory[i + 1]).normalized;
 
-            _details[i].position += direction * Time.deltaTime * _snakeSpeed;
+            //_details[i].position += direction * Time.deltaTime * _snakeSpeed;
+        }
+    }
+
+    public void Destroy()
+    {
+        for (int i = 0; i < _details.Count; i++)
+        {
+            Destroy(_details[i].gameObject);
         }
     }
 }
