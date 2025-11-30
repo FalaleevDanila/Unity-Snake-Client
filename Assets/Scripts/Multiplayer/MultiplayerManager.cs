@@ -1,16 +1,84 @@
 using UnityEngine;
+using Colyseus;
+using UnityEditor.MemoryProfiler;
+using System;
+using UnityEngine.XR;
 
-public class MultiplayerManager : MonoBehaviour
+public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    #region Server
+    private const string GameRoomName = "state_handler";
+    private ColyseusRoom<State> _room;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+        InitializeClient();
+        Connection();
+    }
+
+    private async void Connection()
+    {
+        _room = await client.JoinOrCreate<State>(GameRoomName);
+        _room.OnStateChange += OnChange;
+    }
+
+    private void OnChange(State state, bool isFirstState)
+    {
+        if (isFirstState == false) return;
+        _room.OnStateChange -= OnChange;
+        state.players.ForEach((key, player) =>
+        {
+            if (key == _room.SessionId) CreatePlayer(player);
+            else CreateEnemy(key, player);
+        });
+
+        _room.State.players.OnAdd += CreateEnemy;
+        _room.State.players.OnRemove += RemoveEnemy;
+    }
+
+    protected override void OnApplicationQuit()
+    {
+        base.OnApplicationQuit();
+        LeaveRoom();
+    }
+
+    public void LeaveRoom()
+    {
+        _room?.Leave();
+    }
+    #endregion
+
+    #region Player
+
+    [SerializeField] private Controller _controllerPrefab;
+    [SerializeField] private Snake _snakePrefab;
+
+    private void CreatePlayer(Player player)
+    {
+
+        Snake snake = Instantiate(_snakePrefab);
+        snake.Init(player.d);
+
+        Controller controller = Instantiate(_controllerPrefab);
+        controller.Init(snake);
+    }
+    #endregion
+
+
+    #region Enemy
+    private void CreateEnemy(string key, Player value)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void RemoveEnemy(string key, Player value)
     {
         
     }
+    #endregion
+
 }
+
