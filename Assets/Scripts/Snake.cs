@@ -47,4 +47,9 @@ public class Snake : MonoBehaviour
         _tail.Destroy();
         Destroy(gameObject);
     }
+
+    public void GetMoveInfo(out Vector3 position)
+    {
+        position = transform.position;
+    }
 }
