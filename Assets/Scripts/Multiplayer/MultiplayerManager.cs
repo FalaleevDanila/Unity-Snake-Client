@@ -1,9 +1,7 @@
 using UnityEngine;
 using Colyseus;
-using UnityEditor.MemoryProfiler;
-using System;
-using UnityEngine.XR;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 {
@@ -77,14 +75,31 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 
 
     #region Enemy
-    private void CreateEnemy(string key, Player value)
+
+    Dictionary<string, EnemyController> _enemies = new Dictionary<string, EnemyController>();
+    private void CreateEnemy(string key, Player player)
     {
-        
+        Vector3 position = new Vector3(player.x, 0, player.z);
+
+        Snake snake = Instantiate(_snakePrefab, position, Quaternion.identity);
+        snake.Init(player.d);
+        EnemyController enemy = snake.AddComponent<EnemyController>();
+        enemy.Init(snake, player);
+
+        _enemies.Add(key, enemy);
     }
 
     private void RemoveEnemy(string key, Player value)
     {
-        
+        if (_enemies.ContainsKey(key) == false)
+        {
+            Debug.LogError("Попытка уничтожения enemy, которого нет");
+            return;
+        }
+
+        EnemyController enemy = _enemies[key];
+        _enemies.Remove(key);
+        enemy.Destroy();
     }
     #endregion
 

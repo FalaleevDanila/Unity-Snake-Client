@@ -18,6 +18,11 @@ public class Snake : MonoBehaviour
         _tail.Init(_head, _speed, detailCount);
     }
 
+    public void SetDetailCount(int detailCount)
+    {
+        _tail.SetDetailCount(detailCount);
+    }
+
     void Update()
     {
         Rotate();
@@ -36,10 +41,15 @@ public class Snake : MonoBehaviour
         transform.position += _head.forward * Time.deltaTime * _speed;
     }
 
-    public void LookAt(Vector3 cursorPosition)
+    public void SetRotation(Vector3 pointToLook)
+    {
+        _directionPoint.LookAt(pointToLook);
+        _head.LookAt(pointToLook);
+    }
+
+    public void LerpRotation(Vector3 cursorPosition)
     {
         _targetDirection = cursorPosition - _head.position;
-        //_directionPoint.LookAt(cursorPosition);
     }
 
     public void Destroy()
