@@ -6,7 +6,7 @@ public class Snake : MonoBehaviour
     [SerializeField] private Tail _tailPrefab;
     [SerializeField] private Transform _head;
     [SerializeField] private Transform _directionPoint;
-    [SerializeField] private float _speed = 2;
+    [SerializeField] private float _speed = 4;
     [SerializeField] private float _rotateSpeed = 90f;
 
     private Vector3 _targetDirection = Vector3.zero;
