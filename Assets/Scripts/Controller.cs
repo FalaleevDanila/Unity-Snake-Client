@@ -1,25 +1,32 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Colyseus.Schema;
 
 public class Controller : MonoBehaviour
 {
     [SerializeField] private float _cameraOffsetY = 17f;
     [SerializeField] private Transform _cursor;
-    Snake _snake;
-
     private MultiplayerManager _multiplayerManager;
+
+    private PlayerAim _aim;
+    private Player _player;
+    private Snake _snake;
     private Camera _camera;
     private Plane _plane;
 
-    public void Init(Snake snake)
+    public void Init(PlayerAim aim, Player player, Snake snake)
     {
         _multiplayerManager = MultiplayerManager.Instance;
+
+        _aim = aim;
+        _player = player;
         _snake = snake;
         _camera = Camera.main;
         _plane = new Plane(Vector3.up, Vector3.zero);
 
         _snake.AddComponent<CameraManager>().Init(_cameraOffsetY);
+        _player.OnChange += OnChange;
     }
 
     void Update()
@@ -27,7 +34,7 @@ public class Controller : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             MoveCursor();
-            _snake.LerpRotation(_cursor.position);
+            _aim.SetTargetDirection(_cursor.position);
         }
         SendMove();
     }
@@ -43,12 +50,43 @@ public class Controller : MonoBehaviour
 
     private void SendMove()
     {
-        _snake.GetMoveInfo(out Vector3 position);
+        _aim.GetMoveInfo(out Vector3 position);
         Dictionary<string, object> data = new Dictionary<string, object>()
         {
             {"x", position.x},
             {"z", position.z}
         };
-       _multiplayerManager.SendMessage("move", data);
+        _multiplayerManager.SendMessage("move", data);
+    }
+    
+    private void OnChange(List<DataChange> changes)
+    {
+        Vector3 position = _snake.transform.position;
+        for (int i = 0; i < changes.Count; i++)
+        {
+            switch (changes[i].Field)
+            {
+                case "x":
+                    position.x = (float)changes[i].Value;
+                    break;
+                case "z":
+                    position.z = (float)changes[i].Value;
+                    break;
+                case "d":
+                    _snake.SetDetailCount((byte)changes[i].Value);
+                    break;
+                default:
+                    Debug.LogWarning("Не обрабатывается метод: " + changes[i].Field);
+                    break;
+            }
+        }
+        _snake.SetRotation(position);
+        
+    }
+
+    public void Destroy()
+    {
+        _player.OnChange -= OnChange;
+        _snake.Destroy();
     }
 }
