@@ -3,11 +3,11 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     
-    void Start()
+    public void Init(float offsetY)
     {
         Transform camera = Camera.main.transform;
         camera.parent = transform;
-        camera.localPosition = Vector3.zero;
+        camera.localPosition = Vector3.up * offsetY;
     }
 
     
