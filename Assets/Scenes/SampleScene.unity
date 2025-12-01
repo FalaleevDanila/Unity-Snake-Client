@@ -2871,6 +2871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MultiplayerManager
   _colyseusSettings: {fileID: 11400000, guid: bb1a7e95e45e943519e7dc6decff760d, type: 2}
+  _playerAim: {fileID: 2485119513046188338, guid: 575dbb60f18f84096a82d3d05c98f48a, type: 3}
   _controllerPrefab: {fileID: 4795437511370464241, guid: 8b33373b4e2de4c8ab387ca2b7a1629b, type: 3}
   _snakePrefab: {fileID: 5775954780663245800, guid: f08572b298d5d4683840c9e4275e77fb, type: 3}
 --- !u!4 &585185655
@@ -8579,53 +8580,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: da08a1953eb072e47a0912caf4204a1c, type: 3}
   m_PrefabInstance: {fileID: 1887900272}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1894782375
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1894782377}
-  - component: {fileID: 1894782376}
-  m_Layer: 0
-  m_Name: Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1894782376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894782375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ccbe090ed53c426a9ad5bcbe69f5c56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Test
-  _detailCount: 4
-  _controllerPrefab: {fileID: 4795437511370464241, guid: 8b33373b4e2de4c8ab387ca2b7a1629b, type: 3}
-  _snakePrefab: {fileID: 5775954780663245800, guid: f08572b298d5d4683840c9e4275e77fb, type: 3}
---- !u!4 &1894782377
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894782375}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1896907025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9749,6 +9703,5 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 1894782377}
   - {fileID: 585185655}
   - {fileID: 204974129}
