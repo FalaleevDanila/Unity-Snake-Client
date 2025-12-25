@@ -2,7 +2,6 @@ using UnityEngine;
 using Colyseus;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using System;
 
 public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 {
@@ -75,7 +74,7 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         snake.Init(player.d);
 
         PlayerAim aim = Instantiate(_playerAim, position, quaternion);
-        aim.Init(snake.Speed);
+        aim.Init(snake._head, snake.Speed);
 
         Controller controller = Instantiate(_controllerPrefab);
         controller.Init(aim, player, snake);

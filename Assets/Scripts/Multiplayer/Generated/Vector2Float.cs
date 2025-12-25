@@ -13,5 +13,8 @@ public partial class Vector2Float : Schema {
 
 	[Type(1, "number")]
 	public float z = default(float);
+
+	[Type(2, "uint32")]
+	public uint id = default(uint);
 }
 
