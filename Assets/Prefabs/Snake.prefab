@@ -67,7 +67,7 @@ GameObject:
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24e04c9d80684a1e817eb030b2a4589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Snake
+  _playerLayer: 6
   _tailPrefab: {fileID: 985971441396688565, guid: 16413c15f0a884f37a9be92cde6d90e3, type: 3}
   <_head>k__BackingField: {fileID: 6796392409146293098}
   _speed: 2

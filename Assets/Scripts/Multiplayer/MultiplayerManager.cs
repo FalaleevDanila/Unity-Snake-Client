@@ -58,6 +58,11 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         _room.Send(key, data);
     }
 
+    public void SendMessage(string key, string data)
+    {
+        _room.Send(key, data);
+    }
+
     #endregion
 
     #region Player
@@ -77,7 +82,7 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         aim.Init(snake._head, snake.Speed);
 
         Controller controller = Instantiate(_controllerPrefab);
-        controller.Init(aim, player, snake);
+        controller.Init(_room.SessionId, aim, player, snake);
     }
     #endregion
 
@@ -91,7 +96,7 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         Snake snake = Instantiate(_snakePrefab, position, Quaternion.identity);
         snake.Init(player.d);
         EnemyController enemy = snake.AddComponent<EnemyController>();
-        enemy.Init(snake, player);
+        enemy.Init(key, player, snake);
 
         _enemies.Add(key, enemy);
     }

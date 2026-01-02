@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -114,6 +115,25 @@ public class Tail : MonoBehaviour
         }
     }
 
+    public DetailPositions GetDetailPositions()
+    {
+        int detailsCount = _details.Count;
+        DetailPosition[] ds = new DetailPosition[detailsCount];
+        for (int i = 0; i < detailsCount; i++)
+        {
+            ds[i] = new DetailPosition()
+            {
+                x = _details[i].position.x,
+                z = _details[i].position.z
+            };
+        }
+        DetailPositions detailPositions = new DetailPositions()
+        {
+            ds = ds
+        };
+        return detailPositions;
+    }
+
     public void Destroy()
     {
         for (int i = 0; i < _details.Count; i++)
@@ -121,4 +141,21 @@ public class Tail : MonoBehaviour
             Destroy(_details[i].gameObject);
         }
     }
+
+    
+}
+
+
+[System.Serializable]
+public struct DetailPosition
+{
+    public float x;
+    public float z;
+}
+
+[System.Serializable]
+public struct DetailPositions
+{
+    public string id;
+    public DetailPosition[] ds;
 }
