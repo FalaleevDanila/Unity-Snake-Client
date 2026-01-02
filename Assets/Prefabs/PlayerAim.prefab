@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872e00903129e44fd9c999338f87a1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAim
+  _collisionLayer:
+    serializedVersion: 2
+    m_Bits: 55
+  _overlapRadius: 0.5
   _rotateSpeed: 90
 --- !u!1 &5261722597143602911
 GameObject:
