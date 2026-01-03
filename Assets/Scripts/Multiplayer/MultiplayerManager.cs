@@ -20,7 +20,11 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 
     private async void Connection()
     {
-        _room = await client.JoinOrCreate<State>(GameRoomName);
+        Dictionary<string, object> data = new Dictionary<string, object>()
+        {
+            { "login", PlayerSettings.Instance.Login }
+        };
+        _room = await client.JoinOrCreate<State>(GameRoomName, data);
         _room.OnStateChange += OnChange;
     }
 
@@ -136,4 +140,6 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 
 
     #endregion
+
+    
 }
