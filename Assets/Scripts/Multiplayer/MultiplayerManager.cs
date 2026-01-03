@@ -2,6 +2,8 @@ using UnityEngine;
 using Colyseus;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+using System.Linq;
 
 public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 {
@@ -87,6 +89,8 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 
         Controller controller = Instantiate(_controllerPrefab);
         controller.Init(_room.SessionId, aim, player, snake);
+
+        AddLeader(_room.SessionId, player);
     }
     #endregion
 
@@ -103,10 +107,13 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         enemy.Init(key, player, snake);
 
         _enemies.Add(key, enemy);
+
+        AddLeader(key, player);
     }
 
     private void RemoveEnemy(string key, Player vector2Float)
     {
+        RemoveLeader(key);
         if (_enemies.ContainsKey(key) == false)
         {
             Debug.LogError("Попытка уничтожения enemy, которого нет");
@@ -141,5 +148,61 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
 
     #endregion
 
-    
+    #region LeaderBoard
+
+    private class LoginScorePair
+    {
+        public string login;
+        public float score;
+    }
+
+    [SerializeField] private Text _text;
+
+    Dictionary<string, LoginScorePair> _leaders = new Dictionary<string, LoginScorePair>();
+
+    private void AddLeader(string sessionID, Player player)
+    {
+        if (_leaders.ContainsKey(sessionID)) return;
+
+        _leaders.Add(sessionID, new LoginScorePair
+        {
+            login = player.login,
+            score = player.score
+        });
+        UpdateBoard();
+    }
+
+    private void RemoveLeader(string sessionID)
+    {
+        if (_leaders.ContainsKey(sessionID) == false) return;
+        _leaders.Remove(sessionID);
+        UpdateBoard();
+    }
+
+    public void UpdateScore(string sessionID, int score)
+    {
+        if (_leaders.ContainsKey(sessionID) == false) return;
+        _leaders[sessionID].score = score;
+        UpdateBoard();
+    }
+
+    private void UpdateBoard()
+    {
+        // 1. LOGIN: XXX (TOP 8)
+        int topCount = Mathf.Clamp(_leaders.Count, 0, 8);
+        var top8 = _leaders.OrderByDescending(pair => pair.Value.score).Take(topCount);
+
+        string text = "";
+        int i = 1;
+
+        foreach (var item in top8)
+        {
+            text += $" {i}. {item.Value.login}: {item.Value.score}\n";
+            i++;
+        }
+
+        _text.text = text;
+    }
+
+    #endregion
 }
