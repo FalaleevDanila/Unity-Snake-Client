@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using TMPro;
 
 public class Snake : MonoBehaviour
 {
@@ -8,11 +8,13 @@ public class Snake : MonoBehaviour
     [SerializeField] private Tail _tailPrefab;
     [field: SerializeField] public Transform _head { get; private set; }
     [SerializeField] private float _speed = 4;
-
+    private TextMeshProUGUI _login;
     private Tail _tail;
 
-    public void Init(int detailCount, bool isPlayer = false)
+    public void Init(int detailCount, string login, bool isPlayer = false)
     {
+        _login = FindAnyObjectByType<TextMeshProUGUI>();
+        _login.text = "";
         if (isPlayer)
         {
             gameObject.layer = _playerLayer;
@@ -21,6 +23,10 @@ public class Snake : MonoBehaviour
             {
                 childrens[i].gameObject.layer = _playerLayer;
             }
+        }
+        else
+        {
+            _login.text = login;
         }
         _tail = Instantiate(_tailPrefab, transform.position, Quaternion.identity);
         _tail.Init(_head, _speed, detailCount, _playerLayer, isPlayer);

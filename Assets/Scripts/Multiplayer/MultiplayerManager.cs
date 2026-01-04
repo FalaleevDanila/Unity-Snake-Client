@@ -82,7 +82,7 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         Quaternion quaternion = Quaternion.identity;
 
         Snake snake = Instantiate(_snakePrefab, position, Quaternion.identity);
-        snake.Init(player.d, true);
+        snake.Init(player.d, player.login, true);
 
         PlayerAim aim = Instantiate(_playerAim, position, quaternion);
         aim.Init(snake._head, snake.Speed);
@@ -102,7 +102,7 @@ public class MultiplayerManager : ColyseusManager<MultiplayerManager>
         Vector3 position = new Vector3(player.x, 0, player.z);
 
         Snake snake = Instantiate(_snakePrefab, position, Quaternion.identity);
-        snake.Init(player.d);
+        snake.Init(player.d, player.login);
         EnemyController enemy = snake.AddComponent<EnemyController>();
         enemy.Init(key, player, snake);
 

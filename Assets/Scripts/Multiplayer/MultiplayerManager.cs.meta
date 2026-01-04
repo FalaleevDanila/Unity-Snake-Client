@@ -8,6 +8,8 @@ MonoImporter:
   - _playerAim: {fileID: 2485119513046188338, guid: 575dbb60f18f84096a82d3d05c98f48a, type: 3}
   - _controllerPrefab: {fileID: 4795437511370464241, guid: 8b33373b4e2de4c8ab387ca2b7a1629b, type: 3}
   - _snakePrefab: {fileID: 5775954780663245800, guid: f08572b298d5d4683840c9e4275e77fb, type: 3}
+  - _applePrefab: {fileID: 3950582746367246686, guid: 38c7ae658352341a1a36f3dbf2c147f7, type: 3}
+  - _text: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
